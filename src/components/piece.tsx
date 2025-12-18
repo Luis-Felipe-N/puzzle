@@ -29,7 +29,6 @@ export function Piece({ id, position, size, origin, image, imageSize }: PiecePro
           boxSizing: 'border-box'
         }}
       >
-        {id}
       </div>
     </DragItem>
   )

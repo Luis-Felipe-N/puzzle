@@ -1,12 +1,6 @@
-import { useEffect, useRef, useState } from "react"
-import { DragDrogColumn } from "./drag-drop.tsx/drag-drop-column";
+import { useRef, useState } from "react"
 import { DropZone } from "./drag-drop.tsx/drop-zone";
 import { usePuzzle } from "../context/puzzle-context";
-
-interface GridProps {
-  imageWidth: number;
-  imageHeight: number;
-}
 
 export function Grid() {
   const { config, boardPieces } = usePuzzle()

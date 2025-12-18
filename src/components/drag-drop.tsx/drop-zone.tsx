@@ -1,4 +1,4 @@
-import { use, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { usePuzzle } from "../../context/puzzle-context";
 
 interface DragDrogColumnProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,7 +16,7 @@ export function DropZone({ children, position, ...props }: DragDrogColumnProps) 
     setIsOver(true);
   }
 
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = () => {
     setIsOver(false);
 
   }

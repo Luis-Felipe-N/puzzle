@@ -34,6 +34,10 @@ export const PuzzleProvider = ({ children }: { children: React.ReactNode }) => {
 
   const movePiece = (id: string, newPos: { x: number; y: number }) => {
     const piece = availablePieces.find((p) => id === p.id)
+    if (!piece) return;
+
+    const pieceInCorrectPosition = JSON.stringify(piece.origin) === JSON.stringify(newPos)
+    if (!pieceInCorrectPosition) return;
 
     setAvailablePieces((prev) => prev.filter((p) => p.id !== id));
     const updatedPiece = { ...piece!, position: newPos };

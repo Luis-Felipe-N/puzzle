@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Piece } from "./piece";
+import { fisherYatesShuffle } from "../utils/fisher-yates";
 
 interface PiecesProps {
   imageWidth: number;
@@ -28,12 +29,16 @@ export function Pieces({ imageWidth, imageHeight }: PiecesProps) {
     return p;
   });
 
+  const positions = pieces.map((piece) => piece.position);
+
+  const positionShuffled = fisherYatesShuffle(positions);
+
   return (
     <div className="bg-gray-200 relative border border-black" style={{ width: bw, height: bh }}>
-      {pieces.map((piece) => (
+      {pieces.map((piece, i) => (
         <Piece
           key={piece.id}
-          position={piece.position}
+          position={positionShuffled[i]}
           origin={piece.origin}
           size={blockSize}
           image={imageUrl}

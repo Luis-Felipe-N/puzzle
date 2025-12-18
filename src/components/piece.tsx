@@ -1,6 +1,7 @@
 import { DragItem } from "./drag-drop.tsx/drag-item";
 
 interface PieceProps {
+  id: string;
   position: { x: number; y: number };
   origin: { x: number; y: number };
   size: number;
@@ -8,10 +9,10 @@ interface PieceProps {
   imageSize: { width: number; height: number };
 }
 
-export function Piece({ position, size, origin, image, imageSize }: PieceProps) {
+export function Piece({ id, position, size, origin, image, imageSize }: PieceProps) {
 
   return (
-    <DragItem>
+    <DragItem id={id}>
 
       <div
         className="hover:z-10 hover:border-blue-400 transition-all cursor-pointer"
@@ -28,7 +29,7 @@ export function Piece({ position, size, origin, image, imageSize }: PieceProps) 
           boxSizing: 'border-box'
         }}
       >
-        Piece
+        {id}
       </div>
     </DragItem>
   )

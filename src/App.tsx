@@ -1,6 +1,7 @@
 import './App.css'
 import { Grid } from './components/grid'
 import { Pieces } from './components/pieces'
+import { PuzzleProvider } from './context/puzzle-context'
 
 function App() {
 
@@ -15,8 +16,10 @@ function App() {
         <button>Gerar quebra-cabeça</button>
       </form>
       <div className='flex gap-4'>
-        <Grid imageWidth={441} imageHeight={668} />
-        <Pieces imageWidth={441} imageHeight={668} />
+        <PuzzleProvider >
+          <Grid imageWidth={441} imageHeight={668} />
+          <Pieces />
+        </PuzzleProvider>
       </div>
     </div>
   )

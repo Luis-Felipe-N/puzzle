@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react"
+import { DragDrogColumn } from "./drag-drop.tsx/drag-drop-column";
 
 interface GridProps {
   imageWidth: number;
@@ -39,8 +40,8 @@ export function Grid({ imageWidth, imageHeight }: GridProps) {
   }, [])
 
   return (
-    <>
+    <DragDrogColumn>
       <canvas ref={canvasRef} className="bg-white" width={bw} height={bh}></canvas>
-    </>
+    </DragDrogColumn>
   )
 }

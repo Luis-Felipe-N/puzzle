@@ -5,6 +5,7 @@ interface PieceProps {
   image: string;
   imageSize: { width: number; height: number };
 }
+
 export function Piece({ position, size, origin, image, imageSize }: PieceProps) {
 
   return (

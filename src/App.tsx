@@ -1,21 +1,9 @@
-import { useState } from 'react'
 import './App.css'
 import { Grid } from './components/grid'
 import { Pieces } from './components/pieces'
 
 function App() {
-  const [imageSrc, setImageSrc] = useState<string | null>(null)
 
-  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        setImageSrc(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
   return (
     <div>
       <h1>Quebra-cabeça</h1>

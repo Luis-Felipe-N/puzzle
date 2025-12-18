@@ -1,4 +1,4 @@
-import { use, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 interface GridProps {
   imageWidth: number;
@@ -12,8 +12,6 @@ export function Grid({ imageWidth, imageHeight }: GridProps) {
 
   const bw = imageWidth
   const bh = Math.floor(imageHeight / blockSize) * blockSize
-  console.log({ bw, bh })
-  const p = 0;
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -36,8 +34,6 @@ export function Grid({ imageWidth, imageHeight }: GridProps) {
       context.moveTo(0, y + 0.5);
       context.lineTo(bw, y + 0.5);
     }
-
-
 
     context.stroke();
   }, [])

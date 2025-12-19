@@ -1,12 +1,11 @@
 import { useRef, useState } from "react"
 import { DropZone } from "./drag-drop.tsx/drop-zone";
 import { usePuzzle } from "../context/puzzle-context";
+import { Piece } from "./piece";
 
 export function Grid() {
   const { config, boardPieces } = usePuzzle()
-  const minSize = Math.min(config.imageWidth, config.imageHeight)
-
-  const blockSize = minSize / 6
+  const { blockSize } = config
 
   const bw = config.imageWidth
   const bh = Math.floor(config.imageHeight / blockSize) * blockSize
@@ -37,20 +36,7 @@ export function Grid() {
         ))}
 
         {boardPieces.map((piece) => (
-          <div key={piece.id}
-            style={{
-              width: blockSize,
-              height: blockSize,
-              position: 'absolute',
-              left: piece.position.x,
-              top: piece.position.y,
-              backgroundImage: `url(https://images.pexels.com/photos/27972917/pexels-photo-27972917.jpeg)`,
-              backgroundSize: `${config.imageWidth}px ${config.imageHeight}px`,
-              backgroundPosition: `-${piece.origin.x}px -${piece.origin.y}px`,
-              border: '1px solid rgba(0,0,0,0.1)',
-              boxSizing: 'border-box'
-            }}>
-          </div>
+          <Piece key={piece.id} id={piece.id} position={piece.position} origin={piece.origin} size={blockSize} image={config.imageUrl} imageSize={{ width: config.imageWidth, height: config.imageHeight }} />
         ))}
       </div>
     </div >

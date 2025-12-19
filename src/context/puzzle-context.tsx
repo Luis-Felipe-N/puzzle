@@ -14,6 +14,7 @@ interface Config {
   blockSize: number;
   imageWidth: number;
   imageHeight: number;
+  imageUrl: string;
 }
 
 interface PuzzleContextType {
@@ -32,6 +33,14 @@ export const PuzzleProvider = ({ children }: { children: React.ReactNode }) => {
   const [config, setConfig] = useState<Config>({} as Config);
   const [isLoading, setIsLoading] = useState(true);
 
+  const isWinner = availablePieces.length === 0 && boardPieces.length > 0;
+
+  useEffect(() => {
+    if (isWinner) {
+      setTimeout(() => alert("Você venceu!"), 100);
+    }
+  }, [isWinner]);
+
   const movePiece = (id: string, newPos: { x: number; y: number }) => {
     const piece = availablePieces.find((p) => id === p.id)
     if (!piece) return;
@@ -46,9 +55,16 @@ export const PuzzleProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const loadPuzzle = async () => {
-      const imageUrl = "https://picsum.photos/id/237/441/668";
+      const IMAGE_URL = "https://images.pexels.com/photos/27972917/pexels-photo-27972917.jpeg"; // Defina aqui
       try {
-        const { width: imageWidth, height: imageHeight } = await getMeta(imageUrl);
+        const meta = await getMeta(IMAGE_URL);
+        const MAX_WIDTH = (Math.min(window.innerWidth - 40, 600));
+
+        const scale = meta.width > MAX_WIDTH ? MAX_WIDTH / meta.width : 1
+
+        const imageWidth = Math.floor(meta.width * scale);
+        const imageHeight = Math.floor(meta.height * scale);
+
         const minSize = Math.min(imageWidth, imageHeight);
         const blockSize = minSize / 6;
 
@@ -71,7 +87,7 @@ export const PuzzleProvider = ({ children }: { children: React.ReactNode }) => {
           position: shuffledPositions[i]
         }));
 
-        setConfig({ rows, columns: cols, blockSize, imageWidth, imageHeight });
+        setConfig({ rows, columns: cols, blockSize, imageWidth, imageHeight, imageUrl: IMAGE_URL });
         setAvailablePieces(piecesWithShuffledPos);
       } catch (error) {
         console.error("Erro ao carregar puzzle", error);

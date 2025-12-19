@@ -10,7 +10,7 @@ interface PieceProps {
 }
 
 export function Piece({ id, position, size, origin, image, imageSize }: PieceProps) {
-
+  console.log({ position });
   return (
     <DragItem id={id}>
 

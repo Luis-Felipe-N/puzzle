@@ -1,10 +1,12 @@
 import { useRef, useState } from "react"
 import { DropZone } from "./drag-drop.tsx/drop-zone";
 import { usePuzzle } from "../context/puzzle-context";
+import { usePieces } from "../context/pieces-context";
 import { Piece } from "./piece";
 
 export function Grid() {
-  const { config, boardPieces } = usePuzzle()
+  const { config } = usePuzzle();
+  const { boardPieces } = usePieces();
   const { blockSize } = config
 
   const bw = config.imageWidth

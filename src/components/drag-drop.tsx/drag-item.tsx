@@ -1,14 +1,14 @@
-import { useRef } from "react";
+import { useRef, type DragEvent, type ReactNode } from "react";
 
 interface DragItemProps {
   id: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function DragItem({ id, children }: DragItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("pieceId", id);
   }
 

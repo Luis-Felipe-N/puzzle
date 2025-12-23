@@ -1,8 +1,10 @@
 import { Piece } from "./piece";
 import { usePuzzle } from "../context/puzzle-context";
+import { usePieces } from "../context/pieces-context";
 
 export function Pieces() {
-  const { availablePieces, config } = usePuzzle();
+  const { config } = usePuzzle();
+  const { availablePieces } = usePieces();
 
   return (
     <div className="bg-gray-200 relative" style={{ width: config.imageWidth, height: config.imageHeight }}>

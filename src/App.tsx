@@ -1,6 +1,7 @@
 import { Grid } from './components/grid'
 import { Pieces } from './components/pieces'
 import { PuzzleProvider } from './context/puzzle-context'
+import { PiecesProvider } from './context/pieces-context'
 
 function App() {
   return (
@@ -10,9 +11,11 @@ function App() {
         <h1 className="font-hegarty text-3xl">Quebra-cabeça</h1>
 
         <div className='flex gap-4 my-12'>
-          <PuzzleProvider >
-            <Grid />
-            <Pieces />
+          <PuzzleProvider>
+            <PiecesProvider>
+              <Grid />
+              <Pieces />
+            </PiecesProvider>
           </PuzzleProvider>
         </div>
 

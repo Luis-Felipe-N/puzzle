@@ -15,13 +15,13 @@ export function Piece({ id, position, size, origin, image, imageSize }: PiecePro
     <DragItem id={id}>
 
       <div
-        className="hover:z-10 hover:border-blue-400 transition-all cursor-pointer"
-        style={{
+        className="hover:z-10 hover:border-blue-400 transition-all cursor-pointer" style={{
           width: size,
           height: size,
           left: position.x,
           top: position.y,
           position: 'absolute',
+          transition: 'all 0.3s ease-out',
           backgroundImage: `url(${image})`,
           backgroundSize: `${imageSize.width}px ${imageSize.height}px`,
           backgroundPosition: `-${origin.x}px -${origin.y}px`,

@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  username       String    @unique
+  passwordHash   String    @map("password_hash")
+  profilePicture String?   @map("profile_picture")
+  bio            String?
+  emailVerified  DateTime? @map("email_verified")
+  points         Int       @default(0)
+  level          Int       @default(1)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  matches    Match[]
+  accounts   Account[]
+  sessions   Session[]
+  scores     Score[]
+  shareLinks ShareLink[]
+  puzzles    Puzzle[]
+
+  @@index([username])
+  @@map("users")
+}
+
+model Puzzle {
+  id          String     @id @default(uuid())
+  title       String
+  imageUrl    String     @map("image_url")
+  description String?
+  difficulty  Difficulty @default(MEDIUM)
+  rows        Int
+  columns     Int
+  blockSize   Int        @map("block_size")
+  config      Json?
+  visibility  Visibility @default(PUBLIC)
+
+  createdById String? @map("created_by_id")
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  matches    Match[]
+  scores     Score[]
+  shareLinks ShareLink[]
+
+  @@index([difficulty])
+  @@index([createdAt])
+  @@map("puzzles")
+}
+
+model Match {
+  id        String      @id @default(uuid())
+  userId    String      @map("user_id")
+  puzzleId  String      @map("puzzle_id")
+  status    MatchStatus @default(IN_PROGRESS)
+  startedAt DateTime    @default(now()) @map("started_at")
+  endedAt   DateTime?   @map("ended_at")
+  elapsedMs Int?        @map("elapsed_ms")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  moves  Move[]
+
+  score Score?
+
+  @@index([userId])
+  @@index([puzzleId])
+  @@index([status])
+  @@map("matches")
+}
+
+model Move {
+  id        String   @id @default(uuid())
+  matchId   String   @map("match_id")
+  moveData  Json     @map("move_data")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+  @@map("moves")
+}
+
+model Score {
+  id         String   @id @default(uuid())
+  matchId    String   @unique @map("match_id")
+  userId     String   @map("user_id")
+  puzzleId   String   @map("puzzle_id")
+  durationMs Int      @map("duration_ms")
+  movesCount Int?     @map("moves_count")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  match  Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([puzzleId])
+  @@index([durationMs])
+  @@map("scores")
+}
+
+model ShareLink {
+  id          String    @id @default(uuid())
+  puzzleId    String    @map("puzzle_id")
+  createdById String    @map("created_by_id")
+  code        String    @unique
+  expiresAt   DateTime? @map("expires_at")
+  usesLeft    Int?      @map("uses_left")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  puzzle    Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  createdBy User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([puzzleId])
+  @@index([createdById])
+  @@map("share_links")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum MatchStatus {
+  IN_PROGRESS
+  WON
+  ABANDONED
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  UNLISTED
+}

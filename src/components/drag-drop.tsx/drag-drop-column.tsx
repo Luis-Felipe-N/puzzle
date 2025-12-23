@@ -1,13 +1,13 @@
-import { useRef } from "react";
+import { useRef, type DragEvent, type ReactNode } from "react";
 
 interface DragDrogColumnProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function DragDrogColumn({ children }: DragDrogColumnProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     console.log("Drag over", event);
   }
